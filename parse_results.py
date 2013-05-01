@@ -23,6 +23,6 @@ sys.path.append('lib')
 import scraper
         
 
-elecciones = scraper.Scraper('/home/erkurita/copiacne/resultado_presidencial_2013/',scraper.filenames)
+elecciones = scraper.Scraper('../../copiacne/resultado_presidencial_2013/',scraper.filenames)
 elecciones.do_scrape()
 print "Done!"
