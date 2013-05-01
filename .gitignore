@@ -35,5 +35,5 @@ nosetests.xml
 .pydevproject
 
 # SQL, SQLite, csv files
-*.sql(ite)?
+#*.sql(ite)?
 *.csv
