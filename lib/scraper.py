@@ -17,11 +17,11 @@
 # along with elections-data-scraper.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
+import csv, re,  os
 from directories import Directory
 from uniwriter import UnicodeWriter
-import os
+from options_parser import Parser
 from os import path
-import csv, re
 
 #
 # The following snippet of code has been copied from 
@@ -61,18 +61,13 @@ except ImportError:
 
 HTML_RESULTS_ID = ".//div[@id='resultDiv.21']"
 
-filenames = {
-    'codigos'    : 'elecciones_2013_codigos.csv', 
-    'candidatos' : 'elecciones_2013_candidatos.csv', 
-    'partidos'   : 'elecciones_2013_partidos.csv'
-}
+
 
 class Scraper:
     """
     Escanea los HTMLs de los resultados y vuelca los datos en un soporte especifico
     """
-    def __init__(self, directory,filenames = {}):
-        self.directory = directory
+    def __init__(self,arg_options = None):
         self.opcodes = ['codigos','partidos','candidatos']
         # Which CSV to generate
         self.options = {
@@ -103,41 +98,58 @@ class Scraper:
             9  : '0'*3,
             12 : ''
         }
-        
-        if filenames != {}:
-            try:
-                new_filenames = filenames.viewkeys() ^ self.filenames.viewkeys()
-                if new_filenames == set([]):
-                    self.filenames.update(filenames)
-                else:
-                    raise KeyError
-            except KeyError:
-                raise Exception("Filename keys provided not valid, must be either "+(','.join(self.options.keys())))
+
+        if arg_options != None:
+            self.set_options(arg_options)
     
-    def do_scrape(self, options = []):
-        if not self.valid_keys(options):
-            raise KeyError('Opciones de recoleccion no validas: '+', '.join(options))
+    ##
+    # @param options: Argumentos del programa
+    #
+    def set_options(self,options):
+        self.arg_options    = options
+        
+        self.do_candidatos  = options.no_candidatos
+        self.do_partidos    = options.no_partidos
+        self.do_codigos     = options.no_codigos
+        self.directory      = options.path
+        
+        self.configure()
+          
+    def configure(self):
+        options = self.options
+        if not self.do_candidatos:
+            options.pop('candidatos')
+        if not self.do_partidos:
+            options.pop('partidos')
+        if not self.do_codigos:
+            options.pop('codigos')
+        self.options = options
+          
+    def do_scrape(self):
 
         directory = Directory(self.directory)
+        options = self.options.keys()
+        
         if options == []:
-            options = self.options.keys()
+            return
         
         self.clear_files()
         
-        self.scrape_data(directory,options)
+        self.scrape_data(directory)
             
-    def scrape_data(self, directory,options):
+    def scrape_data(self, directory):
                 
         files = directory.GetDictionary('files')
         dirs  = directory.GetDictionary('directories')
         
         for folder in dirs.values():
             print "Scraping "+folder.path
-            self.scrape_data(folder,options) 
-            print "Done scraping "+folder.path
+            self.scrape_data(folder) 
             
         for result_data in files:
             filename = path.join(directory.path,result_data)
+            
+            print "Scraping file "+result_data
             result_code = result_data[4:-5]
             
             html_file = self.get_parsed_file(filename)
@@ -149,14 +161,12 @@ class Scraper:
             else:
                 results = results[0]
 
-            for option in options:
+            for option in self.options.keys():
                 self.options[option](result_code,root)
 
     def do_scrape_candidatos(self, result_code,root):
         candidatos  = []
         votes_per   = []
-        votes       = []
-        perc        = []
         
         results     = root.findall(HTML_RESULTS_ID)[0]
         resultados  = results.findall(".//tr/td/a[@href]")
@@ -189,7 +199,6 @@ class Scraper:
         return
 
     def do_scrape_partidos(self, result_code,root):
-        data = []
         resultados = []
          
         # Now on a per-party basis
@@ -232,14 +241,6 @@ class Scraper:
             self.save_to_file('codigos',data)
         
         return
-        
-    def valid_keys(self,options):
-        if options == []:
-            return True
-        set_orig = set(self.options.keys())
-        set_new  = set(options)
-        
-        return set_new.issubset(set_orig)
     
     def prepare_code(self,data_code):
         # We pad the code up to the maximum length to split it properly

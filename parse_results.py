@@ -21,8 +21,11 @@ import sys
 sys.path.append('lib')
 
 import scraper
-        
+from options_parser import Parser
 
-elecciones = scraper.Scraper('../../copiacne/resultado_presidencial_2013/',scraper.filenames)
-elecciones.do_scrape()
-print "Done!"
+if __name__ == '__main__':
+    parser = Parser()
+    options = parser.parse_args(namespace=scraper.Scraper)
+    elecciones = scraper.Scraper(options)
+    elecciones.do_scrape()
+    print "Done!"
