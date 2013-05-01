@@ -14,3 +14,9 @@ ellos.
 ( https://github.com/ghostbar/copiacne ) que proporciona el volcado
 de la pagina web del CNE, ya que desde el exterior no se podia
 acceder hasta hace poco.
+
+Requerimientos
+==============
+
+lxml -> usa etree / ElementTree, mas concretamente HTMLParser()
+
