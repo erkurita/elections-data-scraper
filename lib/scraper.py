@@ -34,27 +34,7 @@ try:
     from lxml import etree
     print("running with lxml.etree")
 except ImportError:
-    try:
-    # Python 2.5
-        import xml.etree.cElementTree as etree
-        print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # Python 2.5
-            import xml.etree.ElementTree as etree
-            print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree
-                print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree
-                    print("running with ElementTree")
-                except ImportError:
-                    raise ImportError("Failed to import ElementTree from any known place, needed for the script to operate")
+    raise ImportError("Failed to import etree, needed for the script to operate")
 #
 # End of snippet
 #
@@ -88,9 +68,9 @@ class Scraper:
         }
         # Filenames
         self.filenames = {
-            'codigos'       : 'elecciones_codigos.csv',
-            'candidatos'    : 'elecciones_candidatos.csv',
-            'partidos'      : 'elecciones_partidos.csv'
+            'codigos'       : 'elecciones_2013_codigos.csv',
+            'candidatos'    : 'elecciones_2013_candidatos.csv',
+            'partidos'      : 'elecciones_2013_partidos.csv'
         }
         # Length of the code for padding
         self.code_length = {
@@ -153,11 +133,14 @@ class Scraper:
             result_code = result_data[4:-5]
             
             html_file = self.get_parsed_file(filename)
-            root = html_file.getroot()
-            results = root.findall(HTML_RESULTS_ID)
-            
-            if results == []:
+            try: 
+                root = html_file.getroot()
+                results = root.findall(HTML_RESULTS_ID)
+                if results == []:
+                    raise AttributeError('No data found')
+            except AttributeError:
                 continue
+            
             else:
                 results = results[0]
 

@@ -18,6 +18,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `elecciones_2013`
 --
+DROP DATABASE IF EXISTS `elecciones_2013`;
+
 CREATE DATABASE `elecciones_2013` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 
 GRANT ALL PRIVILEGES ON `elecciones_2013`.* to `elec_user`@localhost identified by 'elecciones_2013';
@@ -93,14 +95,14 @@ CREATE TABLE IF NOT EXISTS `centro` (
 
 DROP TABLE IF EXISTS `elecciones_2013_candidatos`;
 CREATE TABLE IF NOT EXISTS `elecciones_2013_candidatos` (
-  `estado` int(10) DEFAULT NULL,
-  `municipio` int(10) DEFAULT NULL,
-  `parroquia` int(10) DEFAULT NULL,
-  `centro` int(10) DEFAULT NULL,
-  `mesa` int(10) DEFAULT NULL,
-  `candidato` varchar(40) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `estado` int(10) NOT NULL,
+  `municipio` int(10) NOT NULL,
+  `parroquia` int(10) NOT NULL,
+  `centro` int(10) NOT NULL,
+  `mesa` int(10) NOT NULL,
+  `candidato` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -131,14 +133,14 @@ CREATE TABLE IF NOT EXISTS `elecciones_2013_codigos` (
 
 DROP TABLE IF EXISTS `elecciones_2013_partidos`;
 CREATE TABLE IF NOT EXISTS `elecciones_2013_partidos` (
-  `estado` int(10) DEFAULT NULL,
-  `municipio` int(10) DEFAULT NULL,
-  `parroquia` int(10) DEFAULT NULL,
-  `centro` int(10) DEFAULT NULL,
-  `mesa` int(10) DEFAULT NULL,
-  `partido` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `estado` int(10) NOT NULL,
+  `municipio` int(10) NOT NULL,
+  `parroquia` int(10) NOT NULL,
+  `centro` int(10) NOT NULL,
+  `mesa` int(10) NOT NULL,
+  `partido` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -244,13 +246,13 @@ CREATE TABLE IF NOT EXISTS `partido` (
 
 DROP TABLE IF EXISTS `votos_candidatos_centro`;
 CREATE TABLE IF NOT EXISTS `votos_candidatos_centro` (
-  `id_estado` int(10) DEFAULT NULL,
-  `id_municipio` int(10) DEFAULT NULL,
-  `id_parroquia` int(10) DEFAULT NULL,
-  `id_centro` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
+  `id_municipio` int(10) NOT NULL,
+  `id_parroquia` int(10) NOT NULL,
+  `id_centro` int(10) NOT NULL,
   `id_candidato` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -263,10 +265,10 @@ CREATE TABLE IF NOT EXISTS `votos_candidatos_centro` (
 
 DROP TABLE IF EXISTS `votos_candidatos_estado`;
 CREATE TABLE IF NOT EXISTS `votos_candidatos_estado` (
-  `id_estado` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
   `id_candidato` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -279,14 +281,14 @@ CREATE TABLE IF NOT EXISTS `votos_candidatos_estado` (
 
 DROP TABLE IF EXISTS `votos_candidatos_mesa`;
 CREATE TABLE IF NOT EXISTS `votos_candidatos_mesa` (
-  `id_estado` int(10) DEFAULT NULL,
-  `id_municipio` int(10) DEFAULT NULL,
-  `id_parroquia` int(10) DEFAULT NULL,
-  `id_centro` int(10) DEFAULT NULL,
-  `id_mesa` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
+  `id_municipio` int(10) NOT NULL,
+  `id_parroquia` int(10) NOT NULL,
+  `id_centro` int(10) NOT NULL,
+  `id_mesa` int(10) NOT NULL,
   `id_candidato` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -299,11 +301,11 @@ CREATE TABLE IF NOT EXISTS `votos_candidatos_mesa` (
 
 DROP TABLE IF EXISTS `votos_candidatos_municipio`;
 CREATE TABLE IF NOT EXISTS `votos_candidatos_municipio` (
-  `id_estado` int(10) DEFAULT NULL,
-  `id_municipio` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
+  `id_municipio` int(10) NOT NULL,
   `id_candidato` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -334,13 +336,13 @@ CREATE TABLE IF NOT EXISTS `votos_candidatos_parroquia` (
 
 DROP TABLE IF EXISTS `votos_partidos_centro`;
 CREATE TABLE IF NOT EXISTS `votos_partidos_centro` (
-  `id_estado` int(10) DEFAULT NULL,
-  `id_municipio` int(10) DEFAULT NULL,
-  `id_parroquia` int(10) DEFAULT NULL,
-  `id_centro` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
+  `id_municipio` int(10) NOT NULL,
+  `id_parroquia` int(10) NOT NULL,
+  `id_centro` int(10) NOT NULL,
   `id_partido` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -353,10 +355,10 @@ CREATE TABLE IF NOT EXISTS `votos_partidos_centro` (
 
 DROP TABLE IF EXISTS `votos_partidos_estado`;
 CREATE TABLE IF NOT EXISTS `votos_partidos_estado` (
-  `id_estado` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
   `id_partido` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -369,14 +371,14 @@ CREATE TABLE IF NOT EXISTS `votos_partidos_estado` (
 
 DROP TABLE IF EXISTS `votos_partidos_mesa`;
 CREATE TABLE IF NOT EXISTS `votos_partidos_mesa` (
-  `id_estado` int(10) DEFAULT NULL,
-  `id_municipio` int(10) DEFAULT NULL,
-  `id_parroquia` int(10) DEFAULT NULL,
-  `id_centro` int(10) DEFAULT NULL,
-  `id_mesa` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
+  `id_municipio` int(10) NOT NULL,
+  `id_parroquia` int(10) NOT NULL,
+  `id_centro` int(10) NOT NULL,
+  `id_mesa` int(10) NOT NULL,
   `id_partido` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -389,11 +391,11 @@ CREATE TABLE IF NOT EXISTS `votos_partidos_mesa` (
 
 DROP TABLE IF EXISTS `votos_partidos_municipio`;
 CREATE TABLE IF NOT EXISTS `votos_partidos_municipio` (
-  `id_estado` int(10) DEFAULT NULL,
-  `id_municipio` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
+  `id_municipio` int(10) NOT NULL,
   `id_partido` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -406,12 +408,12 @@ CREATE TABLE IF NOT EXISTS `votos_partidos_municipio` (
 
 DROP TABLE IF EXISTS `votos_partidos_parroquia`;
 CREATE TABLE IF NOT EXISTS `votos_partidos_parroquia` (
-  `id_estado` int(10) DEFAULT NULL,
-  `id_municipio` int(10) DEFAULT NULL,
-  `id_parroquia` int(10) DEFAULT NULL,
+  `id_estado` int(10) NOT NULL,
+  `id_municipio` int(10) NOT NULL,
+  `id_parroquia` int(10) NOT NULL,
   `id_partido` int(11) NOT NULL DEFAULT '0',
-  `votos` int(10) DEFAULT NULL,
-  `porcentaje` decimal(5,2) DEFAULT NULL
+  `votos` int(10) NOT NULL,
+  `porcentaje` decimal(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -448,9 +450,72 @@ ALTER TABLE `municipio`
 --
 ALTER TABLE `parroquia`
   ADD CONSTRAINT `fk_municipio` FOREIGN KEY (`id_estado`, `id_municipio`) REFERENCES `municipio` (`id_estado`, `id_municipio`);
+
+
+--
+-- Constraints for table `votos_partidos_estado`
+--
+ALTER TABLE `votos_partidos_estado`
+  ADD CONSTRAINT `fk_votos_partidos_estado` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id_estado`);
+
+--
+-- Constraints for table `votos_partidos_municipio`
+--
+ALTER TABLE `votos_partidos_municipio`
+  ADD CONSTRAINT `fk_votos_partidos_municipio` FOREIGN KEY (`id_estado`, `id_municipio`) REFERENCES `municipio` (`id_estado`, `id_municipio`);
+
+--
+-- Constraints for table `votos_partidos_parroquia`
+--
+ALTER TABLE `votos_partidos_parroquia`
+  ADD CONSTRAINT `fk_votos_partidos_parroquia` FOREIGN KEY (`id_estado`, `id_municipio`, `id_parroquia`) REFERENCES `parroquia` (`id_estado`, `id_municipio`, `id_parroquia`);
+
+--
+-- Constraints for table `votos_partidos_centro`
+--
+ALTER TABLE `votos_partidos_centro`
+  ADD CONSTRAINT `fk_votos_partidos_centro` FOREIGN KEY (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`) REFERENCES `centro` (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`);
+
+--
+-- Constraints for table `votos_partidos_mesa`
+--
+ALTER TABLE `votos_partidos_mesa`
+  ADD CONSTRAINT `fk_votos_partidos_mesa` FOREIGN KEY (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`, `id_mesa`) REFERENCES `mesa` (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`, `id_mesa`);
+
+--
+-- Constraints for table `votos_candidatos_estado`
+--
+ALTER TABLE `votos_candidatos_estado`
+  ADD CONSTRAINT `fk_votos_candidatos_estado` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id_estado`);
+
+--
+-- Constraints for table `votos_candidatos_municipio`
+--
+ALTER TABLE `votos_candidatos_municipio`
+  ADD CONSTRAINT `fk_votos_candidatos_municipio` FOREIGN KEY (`id_estado`, `id_municipio`) REFERENCES `municipio` (`id_estado`, `id_municipio`);
+
+--
+-- Constraints for table `votos_candidatos_parroquia`
+--
+ALTER TABLE `votos_candidatos_parroquia`
+  ADD CONSTRAINT `fk_votos_candidatos_parroquia` FOREIGN KEY (`id_estado`, `id_municipio`, `id_parroquia`) REFERENCES `parroquia` (`id_estado`, `id_municipio`, `id_parroquia`);
+
+--
+-- Constraints for table `votos_candidatos_centro`
+--
+ALTER TABLE `votos_candidatos_centro`
+  ADD CONSTRAINT `fk_votos_candidatos_centro` FOREIGN KEY (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`) REFERENCES `centro` (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`);
+
+--
+-- Constraints for table `votos_candidatos_mesa`
+--
+ALTER TABLE `votos_candidatos_mesa`
+  ADD CONSTRAINT `fk_votos_candidatos_mesa` FOREIGN KEY (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`, `id_mesa`) REFERENCES `mesa` (`id_estado`, `id_municipio`, `id_parroquia`, `id_centro`, `id_mesa`);
+
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
